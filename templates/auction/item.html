@@ -17,6 +17,10 @@
         <div>
             <a href="{% url 'user_bid' item.title %}"><button>Bid on Object</button></a>
         </div>
+
+        <div>
+            <a href="{% url 'comment' item.title %}"><button>Comment</button></a>
+        </div>
     {% endif %}
 
     {% if btn %}
@@ -25,6 +29,13 @@
 
     {% for category in categories %}
         <a href="">{{category}}</a>
+    {% endfor %}
+
+    {% for comment in comments %}
+        <p>{{comment}}</p>
+        <p>{{comment.data}}</p>
+    {% empty %}
+        <p>No comments</p>
     {% endfor %}
 
 </body>

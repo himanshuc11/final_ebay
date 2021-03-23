@@ -50,7 +50,8 @@ def item_description(request, item_name):
     if current_user == owner:
         btn = True
 
-    return render(request, 'auction/item.html', {'item': required_item, 'categories': categories, 'btn': btn})
+    all_comments = comment.objects.filter(comment_item__title=item_name)
+    return render(request, 'auction/item.html', {'item': required_item, 'categories': categories, 'btn': btn, 'comments': all_comments})
 
 @login_required
 def user_bid(request, item_name):
@@ -78,10 +79,22 @@ def close(request, item_name):
     if request.user != item.objects.get(title=item_name).owner:
         return HttpResponse('You are not authorized to close this auction')
 
+    # All bid on given item
     required_bids = bid.objects.filter(bid_item__title=item_name)
+    # What price has the item been sold
     win_value = required_bids.aggregate(Max('bid_price'))['bid_price__max']
-    winner_name = required_bids.filter(bid_price=win_value)
+    # Which user has won the auction
+    winner_name = required_bids.filter(bid_price=win_value)[0].bid_owner
 
-    return HttpResponse(str(winner_name) + "Has won the auction at " + str(win_value))
+    return HttpResponse(str(winner_name) + " Has won the auction at " + str(win_value))
 
-
+@login_required
+def item_comment(request, item_name):
+    if request.method == "GET":
+        return render(request, 'auction/comment.html', {'item': item.objects.get(title=item_name)})
+    else:
+        data = request.POST['comment'] # What exactly did the user comment
+        new_comment = comment(writer=request.user, data=data, comment_item=item.objects.get(title=item_name))
+        new_comment.save()
+        return HttpResponse('Your comment was recorded')
+        

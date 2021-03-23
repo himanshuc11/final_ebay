@@ -34,7 +34,7 @@ class comment(models.Model):
     comment_item = models.ForeignKey(item, on_delete=models.CASCADE)
 
     def __str__(self):
-        return self.writer
+        return str(self.writer.username)
 
 # Table holding all the bids
 class bid(models.Model):
