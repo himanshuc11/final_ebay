@@ -1,0 +1,18 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Ebay</title>
+</head>
+<body>
+    
+    <p>The minimum accepted bid is {{current_bid}}</p>
+    <form action="{% url 'user_bid' item_name %}" method="post">
+        {% csrf_token %}
+        <input type="number" name="bid" id="bid">
+        <button type="submit">Submit bid</button>
+    </form>
+</body>
+</html>

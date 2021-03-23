@@ -1,0 +1,31 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Ebay</title>
+</head>
+<body>
+    <p>Owner: {{item.owner}} </p>
+    <p>Titile: {{item.title}}</p>
+    <p>Minimum Bid: {{item.minimum_bid}}</p>
+    <img src="{{item.image_url}}" alt="" height="200" width="200">
+    <p>Minimum Bid: {{item.description}}</p>
+
+    {% if user.is_authenticated %}
+        <div>
+            <a href="{% url 'user_bid' item.title %}"><button>Bid on Object</button></a>
+        </div>
+    {% endif %}
+
+    {% if btn %}
+        <a href="{% url 'close' item.title %}"><button>Close</button></a>
+    {% endif %}
+
+    {% for category in categories %}
+        <a href="">{{category}}</a>
+    {% endfor %}
+
+</body>
+</html>
