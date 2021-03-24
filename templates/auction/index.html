@@ -1,3 +1,5 @@
+{% load static %}
+
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -5,6 +7,7 @@
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Ebay</title>
+    <link rel="stylesheet" href="{% static 'styles.css' %}">
 </head>
 <body>
 
@@ -20,6 +23,10 @@
             <p>Minimum Bid: {{item.minimum_bid}}</p>
             <img src="{{item.image_url}}" alt="" height="200" width="200">
         </a>
+
+        {% if user.is_authenticated %}
+            <a href="{% url 'add' item.title %}"><button type="click">Add to watchlist</button></a>
+        {% endif %}
     {% empty %}
         <p>No item is currently listed</p>
     {% endfor %}

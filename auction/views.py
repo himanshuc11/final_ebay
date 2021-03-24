@@ -98,3 +98,28 @@ def item_comment(request, item_name):
         new_comment.save()
         return HttpResponse('Your comment was recorded')
         
+@login_required
+def add(request, item_name):
+    required_watchlist = watchlist.objects.filter(watchlist_owner__username=request.user.username)
+    if len(required_watchlist) == 0:
+        new_watchlist = watchlist(watchlist_owner=request.user)
+        new_watchlist.save()
+        new_watchlist.watclist_items.add(item.objects.get(title=item_name))
+    else:
+        required_watchlist[0].watclist_items.add(item.objects.get(title=item_name))
+
+    return HttpResponse('Successfully added')
+
+@login_required
+def show_watchlist(request):
+    current_user = request.user
+    user_watchlist = watchlist.objects.get(watchlist_owner=current_user)
+    user_watchlist_items = user_watchlist.watclist_items.all()
+
+    return render(request, 'auction/watchlist.html', {
+        'items': user_watchlist_items
+    })
+
+
+def demo(request):
+    return render(request, 'auction/inherited.html')

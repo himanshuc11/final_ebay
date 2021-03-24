@@ -49,3 +49,6 @@ class bid(models.Model):
 class watchlist(models.Model):
     watchlist_owner = models.ForeignKey(User, on_delete=models.CASCADE)
     watclist_items = models.ManyToManyField(item)
+
+    def __str__(self):
+        return str(self.watchlist_owner.username)
